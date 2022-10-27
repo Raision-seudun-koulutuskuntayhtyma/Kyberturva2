@@ -1,0 +1,157 @@
+USE [master]
+GO
+/****** Object:  Database [Laiterekisteri]    Script Date: 27.10.2022 13.10.22 ******/
+CREATE DATABASE [Laiterekisteri]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Laiterekisteri', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\Laiterekisteri.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'Laiterekisteri_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\Laiterekisteri_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [Laiterekisteri] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Laiterekisteri].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Laiterekisteri] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Laiterekisteri] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Laiterekisteri] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Laiterekisteri] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Laiterekisteri] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET RECOVERY FULL 
+GO
+ALTER DATABASE [Laiterekisteri] SET  MULTI_USER 
+GO
+ALTER DATABASE [Laiterekisteri] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Laiterekisteri] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Laiterekisteri] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Laiterekisteri] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Laiterekisteri] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Laiterekisteri] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [Laiterekisteri] SET QUERY_STORE = OFF
+GO
+USE [Laiterekisteri]
+GO
+/****** Object:  User [KYBER\DB-users]    Script Date: 27.10.2022 13.10.22 ******/
+CREATE USER [KYBER\DB-users] FOR LOGIN [KYBER\DB-users]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [KYBER\DB-users]
+GO
+/****** Object:  Table [dbo].[Lainaus]    Script Date: 27.10.2022 13.10.22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Lainaus](
+	[Lainaustunnus] [int] IDENTITY(1,1) NOT NULL,
+	[Opiskelijanumero] [nvarchar](5) NOT NULL,
+	[Sarjanumero] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Lainaus] PRIMARY KEY CLUSTERED 
+(
+	[Lainaustunnus] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Opiskelija]    Script Date: 27.10.2022 13.10.22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Opiskelija](
+	[Opiskelijanumero] [nvarchar](5) NOT NULL,
+	[Etunimi] [nvarchar](50) NOT NULL,
+	[Sukunimi] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Opiskelija] PRIMARY KEY CLUSTERED 
+(
+	[Opiskelijanumero] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Tietokone]    Script Date: 27.10.2022 13.10.22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tietokone](
+	[Sarjanumero] [nvarchar](50) NOT NULL,
+	[Merkki] [nvarchar](50) NOT NULL,
+	[Malli] [nvarchar](50) NOT NULL,
+	[Ostopäivä] [date] NULL,
+	[TakuuPäättyy] [date] NULL,
+ CONSTRAINT [PK_Tietokone] PRIMARY KEY CLUSTERED 
+(
+	[Sarjanumero] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[Opiskelija] ([Opiskelijanumero], [Etunimi], [Sukunimi]) VALUES (N'55666', N'Jonne', N'Janttari')
+INSERT [dbo].[Opiskelija] ([Opiskelijanumero], [Etunimi], [Sukunimi]) VALUES (N'55667', N'Tuittu', N'Kiukkunen')
+INSERT [dbo].[Opiskelija] ([Opiskelijanumero], [Etunimi], [Sukunimi]) VALUES (N'55668', N'Jakke', N'Jäynä')
+GO
+INSERT [dbo].[Tietokone] ([Sarjanumero], [Merkki], [Malli], [Ostopäivä], [TakuuPäättyy]) VALUES (N'123456', N'Lenovo', N'Thinkpad P52S', CAST(N'2021-01-01' AS Date), CAST(N'2024-01-01' AS Date))
+INSERT [dbo].[Tietokone] ([Sarjanumero], [Merkki], [Malli], [Ostopäivä], [TakuuPäättyy]) VALUES (N'123477', N'HP', N'Elitedesk', NULL, NULL)
+INSERT [dbo].[Tietokone] ([Sarjanumero], [Merkki], [Malli], [Ostopäivä], [TakuuPäättyy]) VALUES (N'128887', N'HP', N'Elitedesk', NULL, NULL)
+INSERT [dbo].[Tietokone] ([Sarjanumero], [Merkki], [Malli], [Ostopäivä], [TakuuPäättyy]) VALUES (N'189762', N'HP', N'Z-book', CAST(N'2019-04-15' AS Date), CAST(N'2020-04-15' AS Date))
+GO
+ALTER TABLE [dbo].[Lainaus]  WITH CHECK ADD  CONSTRAINT [FK_Lainaus_Opiskelija] FOREIGN KEY([Opiskelijanumero])
+REFERENCES [dbo].[Opiskelija] ([Opiskelijanumero])
+GO
+ALTER TABLE [dbo].[Lainaus] CHECK CONSTRAINT [FK_Lainaus_Opiskelija]
+GO
+ALTER TABLE [dbo].[Lainaus]  WITH CHECK ADD  CONSTRAINT [FK_Lainaus_Tietokone] FOREIGN KEY([Sarjanumero])
+REFERENCES [dbo].[Tietokone] ([Sarjanumero])
+GO
+ALTER TABLE [dbo].[Lainaus] CHECK CONSTRAINT [FK_Lainaus_Tietokone]
+GO
+USE [master]
+GO
+ALTER DATABASE [Laiterekisteri] SET  READ_WRITE 
+GO
